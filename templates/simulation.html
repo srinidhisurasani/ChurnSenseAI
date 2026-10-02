@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Adaptive Banking Customer Simulation</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .customer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .customer-id {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .risk-badge {
+            padding: 9px 18px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .probability-box {
+            margin-top: 25px;
+            padding: 22px;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+
+        .probability-label {
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .probability {
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 23px;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-help {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .result-box {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .result-box h3 {
+            margin-top: 0;
+            font-size: 15px;
+            color: #6b7280;
+        }
+
+        .result-value {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .change-positive {
+            color: #dc2626;
+        }
+
+        .change-negative {
+            color: #16a34a;
+        }
+
+        .change-neutral {
+            color: #374151;
+        }
+
+        .progress-container {
+            margin-top: 25px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .progress-background {
+            width: 100%;
+            height: 18px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .progress-original {
+            height: 100%;
+            background: #6b7280;
+            width: 0%;
+        }
+
+        .progress-simulated {
+            height: 100%;
+            background: #2563eb;
+            width: 0%;
+        }
+
+        .scenario-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+
+        .scenario-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .scenario-row:last-child {
+            border-bottom: none;
+        }
+
+        .scenario-label {
+            font-weight: bold;
+        }
+
+        .interpretation {
+            margin-top: 25px;
+            padding: 18px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            border-radius: 6px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 35px;
+            padding-bottom: 30px;
+        }
+
+        @media (max-width: 700px) {
+
+            .container {
+                width: 94%;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <a href="/domain/banking"
+       class="back-link">
+
+        ← Back to Banking
+
+    </a>
+
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <div class="header">
+
+        <h1>
+            Adaptive Banking Customer Simulation
+        </h1>
+
+        <p>
+            Explore how changes in a customer's banking
+            state can affect predicted churn probability.
+        </p>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- CUSTOMER INFORMATION -->
+    <!-- ================================================= -->
+
+    <div class="card">
+
+        <div class="customer-header">
+
+            <div>
+
+                <div class="customer-id">
+
+                    Customer ID:
+                    {{ customer_id }}
+
+                </div>
+
+                <p>
+                    Selected banking customer for simulation
+                </p>
+
+            </div>
+
+            <div class="risk-badge">
+
+                {{ original_risk }} RISK
+
+            </div>
+
+        </div>
+
+
+        <div class="probability-box">
+
+            <div class="probability-label">
+
+                Original Churn Probability
+
+            </div>
+
+            <div class="probability">
+
+                {{ original_probability }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- SIMULATION FORM -->
+    <!-- ================================================= -->
+
+    <div class="card">
+
+        <h2 class="section-title">
+
+            Customer State Simulation
+
+        </h2>
+
+        <p class="section-description">
+
+            Change selected customer attributes to simulate
+            how the predicted churn probability may change.
+
+        </p>
+
+
+        <form method="POST">
+
+
+            <!-- ========================================= -->
+            <!-- ACTIVE MEMBER -->
+            <!-- ========================================= -->
+
+            <div class="form-group">
+
+                <label for="active_member">
+
+                    Active Member
+
+                </label>
+
+                <select
+                    name="active_member"
+                    id="active_member">
+
+                    <option value="0">
+
+                        Inactive Member
+
+                    </option>
+
+                    <option value="1">
+
+                        Active Member
+
+                    </option>
+
+                </select>
+
+                <div class="form-help">
+
+                    Simulate whether the customer remains
+                    active with the bank.
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================= -->
+            <!-- NUMBER OF PRODUCTS -->
+            <!-- ========================================= -->
+
+            <div class="form-group">
+
+                <label for="products_number">
+
+                    Number of Products
+
+                </label>
+
+                <select
+                    name="products_number"
+                    id="products_number">
+
+                    <option value="1">
+                        1 Product
+                    </option>
+
+                    <option value="2">
+                        2 Products
+                    </option>
+
+                    <option value="3">
+                        3 Products
+                    </option>
+
+                    <option value="4">
+                        4 Products
+                    </option>
+
+                </select>
+
+                <div class="form-help">
+
+                    Simulate changes in the number
+                    of banking products used.
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================= -->
+            <!-- TENURE -->
+            <!-- ========================================= -->
+
+            <div class="form-group">
+
+                <label for="tenure">
+
+                    Tenure
+
+                </label>
+
+                <input
+                    type="number"
+                    name="tenure"
+                    id="tenure"
+                    min="0"
+                    step="1"
+                    value="{{ customer.get('tenure', '') }}">
+
+                <div class="form-help">
+
+                    Customer relationship duration.
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================= -->
+            <!-- BALANCE -->
+            <!-- ========================================= -->
+
+            <div class="form-group">
+
+                <label for="balance">
+
+                    Balance
+
+                </label>
+
+                <input
+                    type="number"
+                    name="balance"
+                    id="balance"
+                    min="0"
+                    step="0.01"
+                    value="{{ customer.get('balance', '') }}">
+
+                <div class="form-help">
+
+                    Simulated account balance.
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================= -->
+            <!-- BUTTON -->
+            <!-- ========================================= -->
+
+            <button
+                type="submit"
+                class="button">
+
+                Run Simulation
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RESULT -->
+    <!-- ================================================= -->
+
+    {% if result %}
+
+    <div class="card">
+
+        <h2 class="section-title">
+
+            Simulation Result
+
+        </h2>
+
+
+        <div class="result-grid">
+
+
+            <!-- ORIGINAL -->
+
+            <div class="result-box">
+
+                <h3>
+                    Original Probability
+                </h3>
+
+                <div class="result-value">
+
+                    {{ result.original_probability }}%
+
+                </div>
+
+            </div>
+
+
+            <!-- SIMULATED -->
+
+            <div class="result-box">
+
+                <h3>
+                    Simulated Probability
+                </h3>
+
+                <div class="result-value">
+
+                    {{ result.simulated_probability }}%
+
+                </div>
+
+            </div>
+
+
+            <!-- CHANGE -->
+
+            <div class="result-box">
+
+                <h3>
+                    Change
+                </h3>
+
+                <div
+                    id="changeValue"
+                    class="result-value">
+
+                    {{ result.change }}
+                    percentage points
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- PROGRESS BARS -->
+        <!-- ================================================= -->
+
+        <div class="progress-container">
+
+
+            <div class="progress-label">
+
+                <span>
+                    Original
+                </span>
+
+                <span>
+                    {{ result.original_probability }}%
+                </span>
+
+            </div>
+
+            <div class="progress-background">
+
+                <div
+                    id="originalProgress"
+                    class="progress-original"
+                    data-width="{{ result.original_probability }}">
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-label">
+
+                <span>
+                    Simulated
+                </span>
+
+                <span>
+                    {{ result.simulated_probability }}%
+                </span>
+
+            </div>
+
+            <div class="progress-background">
+
+                <div
+                    id="simulatedProgress"
+                    class="progress-simulated"
+                    data-width="{{ result.simulated_probability }}">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SIMULATED RISK -->
+        <!-- ================================================= -->
+
+        <div class="scenario-box">
+
+            <h3>
+
+                Simulated Risk
+
+            </h3>
+
+            <p>
+
+                After applying the simulated customer
+                state, the predicted churn risk is:
+
+                <strong>
+                    {{ result.simulated_risk }}
+                </strong>
+
+            </p>
+
+
+            <div class="scenario-row">
+
+                <span class="scenario-label">
+                    Active Member:
+                </span>
+
+                <span>
+                    {{ request.form.get(
+                        'active_member',
+                        customer.get('active_member', '')
+                    ) }}
+                </span>
+
+            </div>
+
+
+            <div class="scenario-row">
+
+                <span class="scenario-label">
+                    Number of Products:
+                </span>
+
+                <span>
+                    {{ request.form.get(
+                        'products_number',
+                        customer.get('products_number', '')
+                    ) }}
+                </span>
+
+            </div>
+
+
+            <div class="scenario-row">
+
+                <span class="scenario-label">
+                    Tenure:
+                </span>
+
+                <span>
+                    {{ request.form.get(
+                        'tenure',
+                        customer.get('tenure', '')
+                    ) }}
+                </span>
+
+            </div>
+
+
+            <div class="scenario-row">
+
+                <span class="scenario-label">
+                    Balance:
+                </span>
+
+                <span>
+                    {{ request.form.get(
+                        'balance',
+                        customer.get('balance', '')
+                    ) }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- INTERPRETATION -->
+        <!-- ================================================= -->
+
+        <div class="interpretation">
+
+            <strong>
+                Interpretation:
+            </strong>
+
+            This simulation shows how the trained
+            machine learning model's predicted churn
+            probability changes when selected customer
+            attributes are modified.
+
+            The simulated change represents a model
+            prediction and should not be interpreted as
+            proof that changing an individual attribute
+            will directly cause the customer to churn
+            or remain with the bank.
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    <div class="footer">
+
+        ChurnSense AI |
+        Explainable Retention Analytics
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script>
+
+    const originalProgress =
+        document.getElementById(
+            "originalProgress"
+        );
+
+    const simulatedProgress =
+        document.getElementById(
+            "simulatedProgress"
+        );
+
+
+    if (originalProgress) {
+
+        originalProgress.style.width =
+            originalProgress.dataset.width + "%";
+
+    }
+
+
+    if (simulatedProgress) {
+
+        simulatedProgress.style.width =
+            simulatedProgress.dataset.width + "%";
+
+    }
+
+
+    const changeValue =
+        document.getElementById(
+            "changeValue"
+        );
+
+
+    if (changeValue) {
+
+        const change =
+            parseFloat(
+                changeValue.textContent
+            );
+
+        if (change < 0) {
+
+            changeValue.classList.add(
+                "change-negative"
+            );
+
+        }
+
+        else if (change > 0) {
+
+            changeValue.classList.add(
+                "change-positive"
+            );
+
+        }
+
+        else {
+
+            changeValue.classList.add(
+                "change-neutral"
+            );
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

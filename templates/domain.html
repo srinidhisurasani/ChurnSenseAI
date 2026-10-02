@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{{ domain|capitalize }} - ChurnSense AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 25px 50px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        header p {
+            margin-top: 6px;
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        /* DOMAIN HEADER */
+
+        .domain-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .domain-header h2 {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: #111827;
+        }
+
+        .domain-header p {
+            max-width: 750px;
+            margin: auto;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* MAIN CARD */
+
+        .main-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        /* WORKFLOW */
+
+        .workflow-title {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .workflow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .workflow-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px 18px;
+            text-align: center;
+            min-height: 170px;
+        }
+
+        .workflow-number {
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .workflow-card h3 {
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .workflow-card p {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* DATASET SECTION */
+
+        .dataset-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .dataset-section h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .dataset-section p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        .upload-button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .upload-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        /* BACK BUTTON */
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* DOMAIN DESCRIPTION */
+
+        .domain-info {
+            margin-bottom: 35px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+        }
+
+        .domain-info p {
+            color: #374151;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .workflow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 22px;
+            }
+
+            .container {
+                margin-top: 30px;
+            }
+
+            .domain-header h2 {
+                font-size: 26px;
+            }
+
+            .main-card {
+                padding: 22px;
+            }
+
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="header-content">
+
+        <h1>
+            ChurnSense AI
+        </h1>
+
+        <p>
+            Explainable Retention Analytics Platform
+        </p>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- DOMAIN TITLE -->
+
+    <section class="domain-header">
+
+        {% if domain == "telecom" %}
+
+            <h2>
+                Telecom Customer Churn
+            </h2>
+
+            <p>
+                Analyze telecom customer data to identify customers
+                who are at risk of leaving their service.
+            </p>
+
+        {% elif domain == "banking" %}
+
+            <h2>
+                Banking Customer Churn
+            </h2>
+
+            <p>
+                Analyze banking customer data to identify customers
+                who may discontinue their relationship with the bank.
+            </p>
+
+        {% elif domain == "employee" %}
+
+            <h2>
+                Software Employee Resignation
+            </h2>
+
+            <p>
+                Analyze employee data to identify attrition risk
+                and understand factors associated with resignation.
+            </p>
+
+        {% elif domain == "ecommerce" %}
+
+            <h2>
+                E-Commerce Customer Churn
+            </h2>
+
+            <p>
+                Analyze customer purchasing behavior to identify
+                customers who may become inactive or stop purchasing.
+            </p>
+
+        {% elif domain == "ott" %}
+
+            <h2>
+                OTT / Subscription Cancellation
+            </h2>
+
+            <p>
+                Analyze subscriber behavior to identify customers
+                who may cancel their streaming subscription.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- MAIN CARD -->
+
+    <section class="main-card">
+
+
+        <!-- DOMAIN INFORMATION -->
+
+        <div class="domain-info">
+
+            {% if domain == "telecom" %}
+
+                <p>
+                    This application uses machine learning and
+                    explainable analytics to predict telecom customer
+                    churn, identify important risk factors, recommend
+                    retention actions, and simulate possible interventions.
+                </p>
+
+            {% elif domain == "banking" %}
+
+                <p>
+                    This application uses machine learning and
+                    explainable analytics to predict banking customer
+                    churn, identify important risk factors, recommend
+                    retention actions, and simulate possible interventions.
+                </p>
+
+            {% elif domain == "employee" %}
+
+                <p>
+                    This application uses machine learning and
+                    explainable analytics to predict employee attrition,
+                    identify important factors, recommend possible
+                    interventions, and simulate changes in employee conditions.
+                </p>
+
+            {% elif domain == "ecommerce" %}
+
+                <p>
+                    This application analyzes customer purchasing behavior
+                    to predict churn risk, explain the factors behind the
+                    prediction, recommend retention actions, and simulate
+                    possible interventions.
+                </p>
+
+            {% elif domain == "ott" %}
+
+                <p>
+                    This application analyzes subscriber engagement,
+                    viewing behavior, satisfaction, and subscription
+                    characteristics to predict cancellation risk and
+                    simulate possible retention interventions.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- WORKFLOW -->
+
+        <h3 class="workflow-title">
+            Analytics Workflow
+        </h3>
+
+
+        <div class="workflow">
+
+
+            <!-- PREDICT -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    1
+                </div>
+
+                <h3>
+                    Predict
+                </h3>
+
+                <p>
+                    Identify customers or employees
+                    who are at high risk.
+                </p>
+
+            </div>
+
+
+            <!-- EXPLAIN -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    2
+                </div>
+
+                <h3>
+                    Explain
+                </h3>
+
+                <p>
+                    Understand the important factors
+                    behind each prediction.
+                </p>
+
+            </div>
+
+
+            <!-- RECOMMEND -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    3
+                </div>
+
+                <h3>
+                    Recommend
+                </h3>
+
+                <p>
+                    Generate possible domain-specific
+                    retention actions.
+                </p>
+
+            </div>
+
+
+            <!-- SIMULATE -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    4
+                </div>
+
+                <h3>
+                    Simulate
+                </h3>
+
+                <p>
+                    Test possible interventions and
+                    observe their effect on risk.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- DATASET -->
+
+        <div class="dataset-section">
+
+            <h3>
+                Start Your Analysis
+            </h3>
+
+            <p>
+                Upload a compatible dataset to train the model
+                and generate explainable churn predictions.
+            </p>
+
+            <a href="/upload/{{ domain }}"
+               class="upload-button">
+
+                Upload Dataset
+
+            </a>
+
+            <br>
+
+            <a href="/"
+               class="back-link">
+
+                ← Back to Applications
+
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<footer style="
+    text-align:center;
+    padding:30px;
+    color:#6b7280;
+    font-size:13px;
+">
+
+    ChurnSense AI |
+    Explainable Retention Analytics Platform
+
+</footer>
+
+
+</body>
+
+</html>

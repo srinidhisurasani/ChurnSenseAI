@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Explanation - ChurnSense AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 24px 50px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            color: #cbd5e1;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .title-section {
+            margin-bottom: 25px;
+        }
+
+        .title-section h2 {
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        .title-section p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        /* Prediction cards */
+
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .prediction-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border: 1px solid #e5e7eb;
+        }
+
+        .prediction-card h3 {
+            margin: 0 0 10px;
+            color: #6b7280;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prediction-value {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .probability {
+            color: #dc2626;
+        }
+
+        .risk {
+            color: #d97706;
+        }
+
+        .customer-id {
+            color: #2563eb;
+        }
+
+        /* Section */
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            color: #6b7280;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* SHAP table */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f3f4f6;
+            text-align: left;
+            padding: 14px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .positive {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .negative {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        /* Recommendation */
+
+        .recommendation {
+            background: #f9fafb;
+            border-left: 4px solid #2563eb;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+
+        .recommendation-title {
+            color: #111827;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .recommendation-text {
+            color: #374151;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 25px;
+            line-height: 1.6;
+            color: #1e40af;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+
+            .prediction-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ===================================================== -->
+<!-- HEADER -->
+<!-- ===================================================== -->
+
+<div class="header">
+
+    <h1>ChurnSense AI</h1>
+
+    <p>
+        Explainable Retention Analytics
+    </p>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MAIN -->
+<!-- ===================================================== -->
+
+<div class="container">
+
+
+    <a
+        href="/domain/{{ domain }}"
+        class="back-link"
+    >
+        ← Back to {{ domain|capitalize }}
+    </a>
+    <a href="/simulate/{{ domain }}/{{ customer_id }}"
+   style="
+       display:inline-block;
+       margin-left:15px;
+       padding:10px 18px;
+       background:#2563eb;
+       color:white;
+       text-decoration:none;
+       border-radius:8px;
+       font-weight:bold;
+   ">
+    Simulate Customer
+</a>
+
+    
+
+
+    <!-- ================================================= -->
+    <!-- TITLE -->
+    <!-- ================================================= -->
+
+    <div class="title-section">
+
+        <h2>
+            Customer Explanation
+        </h2>
+
+        <p>
+            Understand why the machine learning model
+            considers this customer at risk.
+        </p>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PREDICTION SUMMARY -->
+    <!-- ================================================= -->
+
+    <div class="prediction-grid">
+
+
+        <div class="prediction-card">
+
+            <h3>
+                Selected Customer
+            </h3>
+
+            <div class="prediction-value customer-id">
+
+                {{ customer_id }}
+
+            </div>
+
+        </div>
+
+
+        <div class="prediction-card">
+
+            <h3>
+                Churn Probability
+            </h3>
+
+            <div class="prediction-value probability">
+
+                {{ churn_probability }}%
+
+            </div>
+
+        </div>
+
+
+        <div class="prediction-card">
+
+            <h3>
+                Risk Level
+            </h3>
+
+            <div class="prediction-value risk">
+
+                {{ risk }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- SHAP EXPLANATION -->
+    <!-- ================================================= -->
+
+    <div class="section">
+
+        <h2>
+            Why is this customer at risk?
+        </h2>
+
+        <p class="section-description">
+
+            The following features contributed to the
+            machine learning model's prediction.
+
+        </p>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Feature
+                        </th>
+
+                        <th>
+                            SHAP Value
+                        </th>
+
+                        <th>
+                            Interpretation
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in explanation %}
+
+                    <tr>
+
+                        <td>
+                            {{ item.feature }}
+                        </td>
+
+                        <td>
+
+                            {% if item.shap_value >= 0 %}
+
+                                <span class="positive">
+
+                                    +{{ "%.6f"|format(item.shap_value) }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="negative">
+
+                                    {{ "%.6f"|format(item.shap_value) }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.shap_value >= 0 %}
+
+                                <span class="positive">
+
+                                    Pushes toward higher churn tendency
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="negative">
+
+                                    Pushes away from higher churn tendency
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SHAP INFORMATION -->
+        <!-- ================================================= -->
+
+        <div class="info-box">
+
+            <strong>
+                How to read this explanation:
+            </strong>
+
+            <br><br>
+
+            Positive SHAP values increase the model's
+            predicted churn tendency, while negative
+            SHAP values decrease it.
+
+            <br><br>
+
+            SHAP values explain how each feature influenced
+            the model's prediction for this customer.
+            They indicate model contribution and should not
+            be interpreted as proof of cause and effect.
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RECOMMENDATIONS -->
+    <!-- ================================================= -->
+
+    <div class="section">
+
+        <h2>
+            Recommended Retention Actions
+        </h2>
+
+        <p class="section-description">
+
+            Based on the customer's characteristics,
+            the system suggests the following actions:
+
+        </p>
+
+
+        {% for recommendation in recommendations %}
+
+        <div class="recommendation">
+
+            <div class="recommendation-title">
+
+                Recommendation {{ loop.index }}
+
+            </div>
+
+            <div class="recommendation-text">
+
+                {{ recommendation }}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+
+<div class="footer">
+
+    ChurnSense AI |
+    Explainable Retention Analytics
+
+</div>
+
+
+</body>
+
+</html>

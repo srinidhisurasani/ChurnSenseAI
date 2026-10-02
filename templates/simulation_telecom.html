@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Telecom Simulation - ChurnSense AI</title>
+
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 25px 50px;
+        }
+
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+
+        .header p {
+            margin-top: 8px;
+            color: #d1d5db;
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+
+        .back {
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+
+        .description {
+            color: #6b7280;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+
+        .customer-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+
+        .info-box {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+
+        .info-box h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+
+        .info-box p {
+            margin: 8px 0 0;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+            background: white;
+        }
+
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            background: #f3f4f6;
+            text-align: center;
+        }
+
+
+        .result-box h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 0;
+        }
+
+
+        .result-box p {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+
+        .positive {
+            color: #dc2626;
+        }
+
+
+        .negative {
+            color: #16a34a;
+        }
+
+
+        .neutral {
+            color: #6b7280;
+        }
+
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            border-radius: 6px;
+            line-height: 1.6;
+        }
+
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+
+        .progress-container {
+            margin-top: 20px;
+        }
+
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+
+        .progress-background {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+
+        .progress-original {
+            height: 100%;
+            background: #dc2626;
+            border-radius: 10px;
+            width: 0;
+        }
+
+
+        .progress-simulated {
+            height: 100%;
+            background: #16a34a;
+            border-radius: 10px;
+            width: 0;
+        }
+
+
+        .scenario-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+
+        .scenario-text {
+            color: #374151;
+            line-height: 1.7;
+        }
+
+
+        .risk-high {
+            color: #dc2626;
+        }
+
+
+        .risk-medium {
+            color: #d97706;
+        }
+
+
+        .risk-low {
+            color: #16a34a;
+        }
+
+
+        @media (max-width: 700px) {
+
+            .customer-info,
+            .form-grid,
+            .result-grid,
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .header {
+                padding: 20px;
+            }
+
+
+            .container {
+                width: 94%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>ChurnSense AI</h1>
+
+        <p>
+            Explainable Retention Analytics Platform
+        </p>
+
+    </div>
+
+
+
+    <div class="container">
+
+
+        <!-- BACK LINK -->
+
+        <a href="/domain/telecom" class="back">
+
+            ← Back to Telecom
+
+        </a>
+
+
+
+        <!-- CUSTOMER INFORMATION -->
+
+        <div class="card">
+
+            <h2>
+                Telecom Retention Simulation
+            </h2>
+
+
+            <p class="description">
+
+                Change selected customer conditions and observe how
+                the trained machine-learning model's predicted
+                churn probability changes.
+
+            </p>
+
+
+            <div class="customer-info">
+
+
+                <!-- CUSTOMER ID -->
+
+                <div class="info-box">
+
+                    <h3>
+                        Customer ID
+                    </h3>
+
+                    <p>
+                        {{ customer_id }}
+                    </p>
+
+                </div>
+
+
+                <!-- CURRENT PROBABILITY -->
+
+                <div class="info-box">
+
+                    <h3>
+                        Current Churn Probability
+                    </h3>
+
+                    <p>
+                        {{ original_probability }}%
+                    </p>
+
+                </div>
+
+
+                <!-- CURRENT RISK -->
+
+                <div class="info-box">
+
+                    <h3>
+                        Current Risk
+                    </h3>
+
+                    <p>
+                        {{ original_risk }}
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SIMULATION FORM -->
+
+        <div class="card">
+
+            <h2>
+                Change Customer Conditions
+            </h2>
+
+
+            <p class="description">
+
+                Select different customer conditions and run the
+                model again to compare the predicted churn risk.
+
+            </p>
+
+
+            <form method="POST">
+
+
+                <div class="form-grid">
+
+
+                    <!-- CONTRACT -->
+
+                    {% if "contract" in customer %}
+
+                    <div>
+
+                        <label>
+                            Contract
+                        </label>
+
+
+                        <select name="contract">
+
+
+                            <option value="{{ customer['contract'] }}">
+
+                                Original:
+                                {{ customer['contract'] }}
+
+                            </option>
+
+
+                            <option value="Month-to-month">
+                                Month-to-month
+                            </option>
+
+
+                            <option value="One year">
+                                One year
+                            </option>
+
+
+                            <option value="Two year">
+                                Two year
+                            </option>
+
+
+                        </select>
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- TENURE -->
+
+                    <div>
+
+                        <label>
+                            Tenure (Months)
+                        </label>
+
+
+                        <input
+                            type="number"
+                            name="tenure"
+                            value="{{ customer['tenure'] | default(0) }}"
+                            min="0"
+                            step="1"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- ONLINE SECURITY -->
+
+                    {% if "onlinesecurity" in customer %}
+
+                    <div>
+
+                        <label>
+                            Online Security
+                        </label>
+
+
+                        <select name="onlinesecurity">
+
+
+                            <option value="{{ customer['onlinesecurity'] }}">
+
+                                Original:
+                                {{ customer['onlinesecurity'] }}
+
+                            </option>
+
+
+                            <option value="Yes">
+                                Yes
+                            </option>
+
+
+                            <option value="No">
+                                No
+                            </option>
+
+
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+
+
+                        </select>
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- TECHNICAL SUPPORT -->
+
+                    {% if "techsupport" in customer %}
+
+                    <div>
+
+                        <label>
+                            Technical Support
+                        </label>
+
+
+                        <select name="techsupport">
+
+
+                            <option value="{{ customer['techsupport'] }}">
+
+                                Original:
+                                {{ customer['techsupport'] }}
+
+                            </option>
+
+
+                            <option value="Yes">
+                                Yes
+                            </option>
+
+
+                            <option value="No">
+                                No
+                            </option>
+
+
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+
+
+                        </select>
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- PAYMENT METHOD -->
+
+                    {% if "paymentmethod" in customer %}
+
+                    <div>
+
+                        <label>
+                            Payment Method
+                        </label>
+
+
+                        <select name="paymentmethod">
+
+
+                            <option value="{{ customer['paymentmethod'] }}">
+
+                                Original:
+                                {{ customer['paymentmethod'] }}
+
+                            </option>
+
+
+                            <option value="Electronic check">
+                                Electronic check
+                            </option>
+
+
+                            <option value="Mailed check">
+                                Mailed check
+                            </option>
+
+
+                            <option value="Bank transfer (automatic)">
+                                Bank transfer (automatic)
+                            </option>
+
+
+                            <option value="Credit card (automatic)">
+                                Credit card (automatic)
+                            </option>
+
+
+                        </select>
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- MONTHLY CHARGES -->
+
+                    {% if "monthly_charges" in customer %}
+
+                    <div>
+
+                        <label>
+                            Monthly Charges
+                        </label>
+
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="monthly_charges"
+                            value="{{ customer['monthly_charges'] }}"
+                            min="0"
+                        >
+
+                    </div>
+
+
+                    {% elif "monthlycharges" in customer %}
+
+                    <div>
+
+                        <label>
+                            Monthly Charges
+                        </label>
+
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="monthlycharges"
+                            value="{{ customer['monthlycharges'] }}"
+                            min="0"
+                        >
+
+                    </div>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- RUN BUTTON -->
+
+                <button type="submit">
+
+                    Run Simulation
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- SIMULATION RESULT -->
+
+        {% if simulation_result %}
+
+        <div class="card">
+
+
+            <h2>
+                Simulation Result
+            </h2>
+
+
+            <p class="description">
+
+                Comparison between the customer's current state
+                and the simulated customer state.
+
+            </p>
+
+
+
+            <!-- RESULT CARDS -->
+
+            <div class="result-grid">
+
+
+                <!-- ORIGINAL -->
+
+                <div class="result-box">
+
+                    <h3>
+                        Original Probability
+                    </h3>
+
+
+                    <p>
+                        {{ simulation_result.original_probability }}%
+                    </p>
+
+                </div>
+
+
+
+                <!-- SIMULATED -->
+
+                <div class="result-box">
+
+                    <h3>
+                        Simulated Probability
+                    </h3>
+
+
+                    <p>
+                        {{ simulation_result.simulated_probability }}%
+                    </p>
+
+                </div>
+
+
+
+                <!-- CHANGE -->
+
+                <div class="result-box">
+
+                    <h3>
+                        Probability Change
+                    </h3>
+
+
+                    <p
+                        class="{% if simulation_result.change > 0 %}positive{% elif simulation_result.change < 0 %}negative{% else %}neutral{% endif %}"
+                    >
+
+                        {{ simulation_result.change }}
+
+                        percentage points
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- BEFORE VS AFTER -->
+
+            <div style="margin-top: 30px;">
+
+                <h3>
+                    Before vs After
+                </h3>
+
+
+
+                <!-- ORIGINAL BAR -->
+
+                <div class="progress-container">
+
+
+                    <div class="progress-header">
+
+                        <span>
+                            Original Churn Probability
+                        </span>
+
+
+                        <span>
+                            {{ simulation_result.original_probability }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-background">
+
+                        <div
+                            id="originalProgress"
+                            class="progress-original"
+                            data-width="{{ simulation_result.original_probability }}"
+                        >
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- SIMULATED BAR -->
+
+                <div class="progress-container">
+
+
+                    <div class="progress-header">
+
+                        <span>
+                            Simulated Churn Probability
+                        </span>
+
+
+                        <span>
+                            {{ simulation_result.simulated_probability }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-background">
+
+                        <div
+                            id="simulatedProgress"
+                            class="progress-simulated"
+                            data-width="{{ simulation_result.simulated_probability }}"
+                        >
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- RISK COMPARISON -->
+
+            <div class="risk-grid">
+
+
+                <!-- ORIGINAL RISK -->
+
+                <div class="info-box">
+
+                    <h3>
+                        Original Risk
+                    </h3>
+
+
+                    <p>
+
+                        {{ original_risk }}
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- SIMULATED RISK -->
+
+                <div class="info-box">
+
+                    <h3>
+                        Simulated Risk
+                    </h3>
+
+
+                    <p>
+
+                        {{ simulation_result.simulated_risk }}
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- SCENARIO SUMMARY -->
+
+            <div class="note">
+
+                <div class="scenario-title">
+
+                    <strong>
+                        Scenario Summary
+                    </strong>
+
+                </div>
+
+
+                <div class="scenario-text">
+
+
+                    <p>
+
+                        The original model prediction was
+
+                        <strong>
+                            {{ simulation_result.original_probability }}%
+                        </strong>.
+
+                    </p>
+
+
+                    <p>
+
+                        After changing the selected customer
+                        conditions, the simulated prediction became
+
+                        <strong>
+                            {{ simulation_result.simulated_probability }}%
+                        </strong>.
+
+                    </p>
+
+
+                    <p>
+
+                        This represents a change of
+
+                        <strong>
+                            {{ simulation_result.change }}
+                            percentage points
+                        </strong>.
+
+                    </p>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- INTERPRETATION -->
+
+            <div class="note">
+
+                <div class="scenario-title">
+
+                    <strong>
+                        How to Interpret the Simulation
+                    </strong>
+
+                </div>
+
+
+                <div class="scenario-text">
+
+
+                    <p>
+
+                        The simulation demonstrates how the trained
+                        machine-learning model responds when the
+                        customer's input conditions are changed.
+
+                    </p>
+
+
+                    <p>
+
+                        A negative probability change means the
+                        simulated customer state received a lower
+                        predicted churn probability from the model.
+
+                    </p>
+
+
+                    <p>
+
+                        A positive probability change means the
+                        simulated customer state received a higher
+                        predicted churn probability from the model.
+
+                    </p>
+
+
+                    <p>
+
+                        This is a model-based scenario analysis.
+                        It does not prove that changing these
+                        conditions will produce the same outcome
+                        in the real world.
+
+                    </p>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+
+    <!-- PROGRESS BAR SCRIPT -->
+
+    <script>
+
+        const originalProgress =
+            document.getElementById("originalProgress");
+
+
+        const simulatedProgress =
+            document.getElementById("simulatedProgress");
+
+
+        if (originalProgress) {
+
+            originalProgress.style.width =
+                originalProgress.dataset.width + "%";
+
+        }
+
+
+        if (simulatedProgress) {
+
+            simulatedProgress.style.width =
+                simulatedProgress.dataset.width + "%";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

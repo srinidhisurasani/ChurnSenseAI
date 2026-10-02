@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ChurnSense AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 28px 60px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        header h1 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: #d1d5db;
+            font-size: 15px;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 1200px;
+            margin: 55px auto;
+            padding: 0 25px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 750px;
+            margin: auto;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* APPLICATIONS */
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .applications {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .application-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 28px;
+            min-height: 190px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .application-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
+            border-color: #2563eb;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        .application-card h3 {
+            font-size: 18px;
+            margin-bottom: 9px;
+        }
+
+        .application-card p {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .open-link {
+            margin-top: 18px;
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* WORKFLOW */
+
+        .workflow-section {
+            width: 100%;
+            margin-top: 65px;
+            margin-bottom: 50px;
+        }
+
+        .workflow-section h2 {
+            text-align: center;
+            font-size: 28px;
+            color: #111827;
+            margin-bottom: 30px;
+        }
+
+        .workflow-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .workflow-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .workflow-number {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .workflow-card h3 {
+            margin: 8px 0 10px;
+            color: #111827;
+            font-size: 18px;
+        }
+
+        .workflow-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .applications {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .workflow-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 22px;
+            }
+
+            .container {
+                margin-top: 35px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .applications {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="header-content">
+
+        <h1>
+            ChurnSense AI
+        </h1>
+
+        <p>
+            Explainable Retention Analytics Platform
+        </p>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- HERO SECTION -->
+
+    <section class="hero">
+
+        <h1>
+            AI-Powered Churn & Retention Analytics
+        </h1>
+
+        <p>
+            Predict churn, understand the factors driving customer or employee
+            risk, receive actionable retention recommendations, and simulate
+            possible interventions.
+        </p>
+
+    </section>
+
+
+    <!-- APPLICATION SECTION -->
+
+    <h2 class="section-title">
+        Select Application
+    </h2>
+
+
+    <div class="applications">
+
+
+        <!-- TELECOM -->
+
+        <a href="/domain/telecom"
+           class="application-card">
+
+            <div>
+
+                <div class="icon">
+                    📡
+                </div>
+
+                <h3>
+                    Telecom Customer Churn
+                </h3>
+
+                <p>
+                    Predict customers who are at risk of leaving
+                    their telecom service.
+                </p>
+
+            </div>
+
+            <div class="open-link">
+                Open Application →
+            </div>
+
+        </a>
+
+
+        <!-- BANKING -->
+
+        <a href="/domain/banking"
+           class="application-card">
+
+            <div>
+
+                <div class="icon">
+                    🏦
+                </div>
+
+                <h3>
+                    Banking Customer Churn
+                </h3>
+
+                <p>
+                    Identify banking customers who may
+                    discontinue their relationship.
+                </p>
+
+            </div>
+
+            <div class="open-link">
+                Open Application →
+            </div>
+
+        </a>
+
+
+        <!-- EMPLOYEE -->
+
+        <a href="/domain/employee"
+           class="application-card">
+
+            <div>
+
+                <div class="icon">
+                    👨‍💻
+                </div>
+
+                <h3>
+                    Software Employee Resignation
+                </h3>
+
+                <p>
+                    Predict employee attrition risk and identify
+                    factors associated with resignation.
+                </p>
+
+            </div>
+
+            <div class="open-link">
+                Open Application →
+            </div>
+
+        </a>
+
+
+        <!-- E-COMMERCE -->
+
+        <a href="/domain/ecommerce"
+           class="application-card">
+
+            <div>
+
+                <div class="icon">
+                    🛒
+                </div>
+
+                <h3>
+                    E-Commerce Customer Churn
+                </h3>
+
+                <p>
+                    Identify customers who may become inactive
+                    or stop purchasing.
+                </p>
+
+            </div>
+
+            <div class="open-link">
+                Open Application →
+            </div>
+
+        </a>
+
+
+        <!-- OTT -->
+
+        <a href="/domain/ott"
+           class="application-card">
+
+            <div>
+
+                <div class="icon">
+                    🎬
+                </div>
+
+                <h3>
+                    OTT / Subscription Cancellation
+                </h3>
+
+                <p>
+                    Predict subscribers who may cancel
+                    their streaming subscription.
+                </p>
+
+            </div>
+
+            <div class="open-link">
+                Open Application →
+            </div>
+
+        </a>
+
+
+    </div>
+
+
+    <!-- WORKFLOW SECTION -->
+
+    <section class="workflow-section">
+
+        <h2>
+            How ChurnSense AI Works
+        </h2>
+
+        <div class="workflow-container">
+
+
+            <!-- PREDICT -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    01
+                </div>
+
+                <h3>
+                    Predict
+                </h3>
+
+                <p>
+                    Analyze customer or employee data and identify
+                    churn or attrition risk using machine learning.
+                </p>
+
+            </div>
+
+
+            <!-- EXPLAIN -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    02
+                </div>
+
+                <h3>
+                    Explain
+                </h3>
+
+                <p>
+                    Understand the key factors that contributed
+                    to each prediction using Explainable AI.
+                </p>
+
+            </div>
+
+
+            <!-- RECOMMEND -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    03
+                </div>
+
+                <h3>
+                    Recommend
+                </h3>
+
+                <p>
+                    Receive domain-specific retention actions
+                    based on the identified risk factors.
+                </p>
+
+            </div>
+
+
+            <!-- SIMULATE -->
+
+            <div class="workflow-card">
+
+                <div class="workflow-number">
+                    04
+                </div>
+
+                <h3>
+                    Simulate
+                </h3>
+
+                <p>
+                    Test possible interventions and observe
+                    how they can affect the predicted churn probability.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    ChurnSense AI |
+    Explainable Retention Analytics Platform
+
+</footer>
+
+
+</body>
+
+</html>

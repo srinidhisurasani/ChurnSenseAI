@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Dataset Analysis - ChurnSense AI</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 25px 60px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .columns {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <h2>ChurnSense AI</h2>
+</header>
+
+<div class="container">
+
+    <h1>{{ title }}</h1>
+
+    <h2>Dataset Analysis</h2>
+
+    <div class="summary">
+
+        <div class="card">
+
+            <div class="number">
+                {{ rows }}
+            </div>
+
+            <p>Total Records</p>
+
+        </div>
+
+        <div class="card">
+
+            <div class="number">
+                {{ columns }}
+            </div>
+
+            <p>Total Features</p>
+
+        </div>
+
+    </div>
+
+    <div class="columns">
+
+        <h2>Dataset Columns</h2>
+
+        <ul>
+
+            {% for column in column_names %}
+
+            <li>{{ column }}</li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+    <a href="/upload/{{ domain }}">
+        ← Upload Another Dataset
+    </a>
+
+</div>
+
+</body>
+
+</html>
